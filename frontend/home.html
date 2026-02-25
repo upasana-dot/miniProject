@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Supply Chain Dashboard</title>
+    <link rel="stylesheet" href="css/home.css">
+</head>
+<body>    <script src="../js/home.js"></script>
+
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <h2>AI Supply Chain Platform</h2>
+    <ul>
+        <li>Dashboard</li>
+        <li>Forecast</li>
+        <li>Inventory</li>
+        <li>Logout</li>
+    </ul>
+</nav>
+
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+    <!-- CARDS -->
+    <div class="cards">
+        <div class="card">
+            <h3>Predicted Demand</h3>
+            <p>↑ 18% Next Month</p>
+        </div>
+        <div class="card">
+            <h3>Stock Status</h3>
+            <p>Healthy</p>
+        </div>
+        <div class="card">
+            <h3>Low Stock Alerts</h3>
+            <p>3 Products</p>
+        </div>
+        <div class="card">
+            <h3>Inventory Cost</h3>
+            <p>₹ 2.4 Lakh</p>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-section">
+        <h3>Inventory Overview</h3>
+        <table>
+            <tr>
+                <th>Product</th>
+                <th>Stock</th>
+                <th>Predicted Demand</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Product A</td>
+                <td>120</td>
+                <td>150</td>
+                <td class="warning">Reorder</td>
+            </tr>
+            <tr>
+                <td>Product B</td>
+                <td>300</td>
+                <td>220</td>
+                <td class="ok">Optimal</td>
+            </tr>
+        </table>
+    </div>
+
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
