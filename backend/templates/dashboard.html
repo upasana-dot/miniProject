@@ -1,12 +1,13 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Dashboard | AI Supply Chain</title>
-    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='/Users/upasanaporwal/Desktop/project/frontend/css/dashboard.css') }}">
 </head>
 <body>
-    <script src="../js/dashboardjs"></script>
+    <script src="../js/dashboard.js"></script>
 
 <nav class="navbar">
     <h2>AI Supply Chain</h2>
@@ -61,6 +62,19 @@
     </div>
 
 </div>
+<script>
+    async function loadDashboard() {
+        const response = await fetch("http://127.0.0.1:5000/api/dashboard");
+        const data = await response.json();
+    
+        document.querySelectorAll(".card p")[0].innerText = data.predicted_demand;
+        document.querySelectorAll(".card p")[1].innerText = data.total_products;
+        document.querySelectorAll(".card p")[2].innerText = data.low_stock + " Items";
+        document.querySelectorAll(".card p")[3].innerText = data.inventory_cost;
+    }
+    
+    loadDashboard();
+    </script>
 
 </body>
 </html>

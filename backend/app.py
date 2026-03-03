@@ -1,34 +1,58 @@
-from flask import Flask
-from config import Config
-from extensions import db
-from routes.user_routes import user_bp
-from dotenv import load_dotenv
-load_dotenv()
-import logging
+# from flask import Flask
+# from flask_cors import CORS
+# from flask import Blueprint , jsonify
+# import sqlite3
+# import logging
 
-def create_app():
-    app = Flask(__name__)
-    app.config.from_object(Config)
 
-    logging.basicConfig(
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s"
-    )
+# from routes.dashboard_routes import dashboard_bp
+# from routes.inventory_routes import inventory_bp
+# from routes.forecast_routes import forecast_bp
 
-    db.init_app(app)
-    app.register_blueprint(user_bp, url_prefix="/api/users")
+# app = Flask(__name__)
+# CORS(app)
 
-    return app
+# from routes.auth_routes import auth_bp
+# app.register_blueprint(auth_bp)
+# app.register_blueprint(dashboard_bp)
+# app.register_blueprint(inventory_bp)
+# app.register_blueprint(forecast_bp)
 
-app = create_app()
+# @app.route("/")
+# def home():
+#     return {"message": "AI Supply Chain Backend Running"}
 
-@app.errorhandler(404)
-def not_found(error):
-    return {"error": "Resource not found"}, 404
+# if __name__ == "__main__":
+#     app.run(debug=True, port=5002)
 
-@app.errorhandler(500)
-def server_error(error):
-    return {"error": "Internal server error"}, 500
+from flask import Flask, render_template
+from models.predict import predict_next_month
+import datetime
+
+app = Flask(__name__)
+
+@app.route("/dashboard")
+def dashboard():
+
+    next_month = datetime.datetime.now().month + 1
+    if next_month > 12:
+        next_month = 1
+
+    predicted_demand = predict_next_month()
+
+    data = {
+        "predicted_demand": f"{predicted_demand} units",
+        "total_products": 120,
+        "low_stock": 3,
+        "inventory_cost": "₹2.4 Lakh",
+        "inventory_summary": [
+            {"product": "Product A", "stock": 120, "status": "Low"},
+            {"product": "Product B", "stock": 300, "status": "Good"}
+        ]
+
+    }
+
+    return render_template("dashboard.html", data=data)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5006)
