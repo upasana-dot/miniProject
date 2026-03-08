@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Demand Forecast</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/forecast.css') }}">
+</head>
+
+<body>
+ <!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">
+        <h2>SanchayAI</h2>
+    </div>
+    <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/forecast">Forecast</a></li>
+        <li><a href="/inventory">Inventory</a></li>
+        <li><a href="/login">Login</a></li>
+    </ul>
+</nav>
+
+<form method="POST" action="/forecast">
+    <select name="product_code" required>
+    {% for p in products %}
+    <option value="{{p}}">{{p}}</option>
+    {% endfor %}
+    </select>
+    
+    <select name="year" required>
+    <option value="2023">2023</option>
+    <option value="2024">2024</option>
+    <option value="2025">2025</option>
+    <option value="2026">2026</option>
+    </select>
+    
+    <button type="submit">Generate forecast</button>
+    </form>
+
+    <div class="chart-container">
+        <canvas id="barChart"></canvas>
+    </div>
+    <div class="chart-container">
+        <canvas id="lineChart"></canvas>  
+    </div>
+        
+    <script>
+        console.log({{ sales_data | tojson }});
+    </script>
+
+
+<script>
+    const months = {{ months | tojson }};
+    const salesData = {{ sales_data | tojson }};
+    console.log(months);
+console.log(salesData);
+
+if(salesData && salesData.length > 0){
+
+const barCtx = document.getElementById('barChart');
+
+new Chart(barCtx, {
+type: 'bar',
+data: {
+labels: months,
+datasets: [{
+label: 'Predicted Sales',
+data: salesData,
+backgroundColor: '#4CAF50'
+}]
+}
+});
+
+const lineCtx = document.getElementById('lineChart');
+
+new Chart(lineCtx, {
+type: 'line',
+data: {
+labels: months,
+datasets: [{
+label: 'Sales Trend',
+data: salesData,
+borderColor: '#3F51B5',
+fill:false
+}]
+}
+});
+
+}
+
+  
+    
+
+    </script>
+    
+</body>
+</html>

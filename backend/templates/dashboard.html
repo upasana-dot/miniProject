@@ -1,80 +1,134 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Dashboard | AI Supply Chain</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='/Users/upasanaporwal/Desktop/project/frontend/css/dashboard.css') }}">
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
 <body>
-    <script src="../js/dashboard.js"></script>
 
-<nav class="navbar">
-    <h2>AI Supply Chain</h2>
-    <ul>
-        <li><a href="dashboard.html">Dashboard</a></li>
-        <li><a href="forecast.html">Forecast</a></li>
-        <li><a href="inventory.html">Inventory</a></li>
-        <li><a href="login.html">Logout</a></li>
-    </ul>
-</nav>
+<!-- HEADER / NAVBAR -->
+<header class="header">
 
-<div class="container">
-
-    <div class="cards">
-        <div class="card">
-            <h3>Predicted Demand</h3>
-            <p>+18%</p>
-        </div>
-        <div class="card">
-            <h3>Total Products</h3>
-            <p>120</p>
-        </div>
-        <div class="card">
-            <h3>Low Stock</h3>
-            <p>3 Items</p>
-        </div>
-        <div class="card">
-            <h3>Inventory Cost</h3>
-            <p>₹2.4 Lakh</p>
-        </div>
+    <div class="logo">
+        SanchayAI
     </div>
 
-    <div class="table-section">
-        <h3>Quick Inventory Summary</h3>
-        <table>
-            <tr>
-                <th>Product</th>
-                <th>Stock</th>
-                <th>Status</th>
-            </tr>
-            <tr>
-                <td>Product A</td>
-                <td>120</td>
-                <td class="warning">Low</td>
-            </tr>
-            <tr>
-                <td>Product B</td>
-                <td>300</td>
-                <td class="ok">Good</td>
-            </tr>
-        </table>
+    <nav class="navbar">
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/forecast">Forecast</a></li>
+            <li><a href="/inventory">Inventory</a></li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+
+</header>
+
+
+<!-- MAIN FLEX CONTAINER -->
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="main">
+
+        <h1>Dashboard</h1>
+
+        <!-- KPI Cards -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Products</h3>
+                <p id="totalProducts">120</p>
+            </div>
+
+            <div class="card">
+                <h3>Low Stock</h3>
+                <p id="lowStock">15</p>
+            </div>
+
+            <div class="card">
+                <h3>Forecast Demand</h3>
+                <p id="forecast">230</p>
+            </div>
+
+        </div>
+
+        <form method="POST">
+
+            <label>Select Product</label>
+            
+            <select name="product_code">
+            
+            {% for product in products %}
+            
+            <option value="{{product}}">{{product}}</option>
+            
+            {% endfor %}
+            
+            </select>
+
+            <input type="number" name="month" placeholder="Month (1-12)" required>
+            <input type="number" name="year" placeholder="Year" required>
+            <button type="submit">Predict</button>
+            
+        </form>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <h2>Sales Prediction</h2>
+            const salesData = {{ sales_data | default([]) | tojson }};
+
+            <canvas id="salesChart" width="400" height="200"></canvas>
+            <script>
+                const salesData = {{ sales_data | default([]) | tojson | safe }};
+                console.log("SalesData:", salesData);
+                    
+                    if (salesData.length > 0){
+                    
+                    const labels = salesData.map(item => item.label);
+                    const values = salesData.map(item => item.sales);
+                    
+                    const ctx = document.getElementById("salesChart").getContext("2d");
+                    
+                    new Chart(ctx, {
+                    
+                    type: "line",
+                    
+                    data: {
+                    
+                    labels: labels,
+                    
+                    datasets: [{
+                    label: "Predicted Sales",
+                    data: values,
+                    borderColor: "blue",
+                    backgroundColor: "rgba(0,0,255,0.2)",
+                    borderWidth: 3,
+                    tension: 0.3
+                    
+                    }]
+                    
+                    },
+                    
+                    options: {
+                    responsive: true
+                    }
+                    
+                    });
+                    
+                    }
+                </script>
+
+        </div>
     </div>
 
 </div>
-<script>
-    async function loadDashboard() {
-        const response = await fetch("http://127.0.0.1:5000/api/dashboard");
-        const data = await response.json();
-    
-        document.querySelectorAll(".card p")[0].innerText = data.predicted_demand;
-        document.querySelectorAll(".card p")[1].innerText = data.total_products;
-        document.querySelectorAll(".card p")[2].innerText = data.low_stock + " Items";
-        document.querySelectorAll(".card p")[3].innerText = data.inventory_cost;
-    }
-    
-    loadDashboard();
-    </script>
+<script src="/static/js/dashboard.js"></script>
 
 </body>
-</html>
+</html> 

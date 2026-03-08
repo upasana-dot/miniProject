@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Login</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <h2>SanchayAI</h2>
+        </div>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/forecast">Forecast</a></li>
+            <li><a href="/inventory">Inventory</a></li>
+            <li><a href="/login">Login</a></li>
+        </ul>
+    </nav>
+
+<div class="login-container">
+
+<h1>🔐 Smart Inventory System</h1>
+
+<form action="/login" method="post" id="loginForm">
+
+<input type="text"  name="username" placeholder="Username" required>
+
+<input type="password" name="password" placeholder="Password" required>
+
+<button type="submit">Login</button>
+
+</form>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+
+</body>
+</html>

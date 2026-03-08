@@ -1,0 +1,89 @@
+body{
+
+    margin:0;
+    font-family:Arial;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+  
+    
+    }
+    
+    /* Navbar */
+    
+        .navbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:#2c3e50;
+            padding:15px 40px;
+            width:100%;
+            position:fixed;
+            top:0;
+            left:0;
+        }
+    
+    .logo{
+    color:white;
+    font-size:22px;
+    font-weight:bold;
+    }
+    
+    .navbar ul{
+    list-style:none;
+    display:flex;
+    gap:20px;
+    }
+    
+    .navbar a{
+    color:white;
+    text-decoration:none;
+    font-size:16px;
+    }
+
+    .navbar a:hover{
+        color:#f1c40f;
+    }
+    
+    .login-container{
+    
+    background:white;
+    padding:40px;
+    border-radius:12px;
+    width:300px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%, -50%);
+
+    
+    }
+    
+    input{
+    
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:6px;
+    border:1px solid #ccc;
+    
+    }
+    
+    button{
+    
+    width:100%;
+    padding:10px;
+    background:#667eea;
+    border:none;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+    
+    }
+    
+    button:hover{
+    
+    background:#5563d6;
+    
+    }

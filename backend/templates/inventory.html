@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Inventory</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/inventory.css') }}">
+
+</head>
+
+<body>
+    <!-- Navbar -->
+
+<nav class="navbar">
+    <div class="logo">
+        <h2>SanchayAI</h2>
+    </div>
+    <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/forecast">Forecast</a></li>
+        <li><a href="/inventory">Inventory</a></li>
+        <li><a href="/login">Login</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+<h1>📦 Inventory Management</h1>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Product</th>
+<th>Stock</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="inventoryTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/inventory.js') }}"></script>
+
+</body>
+</html>

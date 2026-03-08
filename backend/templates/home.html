@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<title>AI Smart Inventory System</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+
+<nav class="navbar">
+    <div class="logo">
+        <h2>SanchayAI</h2>
+    </div>
+    <ul>
+        <li><a href="/home">Home</a></li>
+        <li><a href="/dashboard">Dashboard</a></li>
+        <li><a href="/forecast">Forecast</a></li>
+        <li><a href="/inventory">Inventory</a></li>
+        <li><a href="/login">Login</a></li>
+    </ul>
+</nav>
+
+
+<!-- Hero Section -->
+
+<section class="hero">
+
+<h1>AI Powered Inventory Forecasting</h1>
+
+<p>
+Predict future product demand using Machine Learning
+and manage your inventory efficiently.
+</p>
+
+<div class="buttons">
+
+<a href="/dashboard" class="btn-primary">View Dashboard</a>
+
+<a href="/forecast" class="btn-secondary">See Forecast</a>
+
+</div>
+
+</section>
+
+
+<!-- Features Section -->
+
+<section class="features">
+
+<h2>Our Features</h2>
+
+<div class="feature-container">
+
+<div class="card">
+<h3>AI Prediction</h3>
+<p>Predict next month demand using machine learning models.</p>
+</div>
+
+<div class="card">
+<h3>Smart Inventory</h3>
+<p>Track stock levels and manage products efficiently.</p>
+</div>
+
+<div class="card">
+<h3>Forecast Dashboard</h3>
+<p>Visualize sales trends and future demand predictions.</p>
+</div>
+
+</div>
+
+</section>
+
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+
+
+
+<!-- Footer -->
+
+<footer>
+
+<p>© 2026 Smart Inventory System | Built with Flask & AI</p>
+
+</footer>
+
+
+
+</body>
+</html>
