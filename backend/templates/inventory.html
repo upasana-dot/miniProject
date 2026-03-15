@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <title>Inventory</title>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/inventory.css') }}">
@@ -9,46 +8,52 @@
 </head>
 
 <body>
-    <!-- Navbar -->
 
 <nav class="navbar">
-    <div class="logo">
-        <h2>SanchayAI</h2>
-    </div>
-    <ul>
-        <li><a href="/home">Home</a></li>
-        <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/forecast">Forecast</a></li>
-        <li><a href="/inventory">Inventory</a></li>
-        <li><a href="/login">Login</a></li>
-    </ul>
+<h2>SanchayAI</h2>
+
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/forecast">Forecast</a></li>
+<li><a href="/inventory">Inventory</a></li>
+<li><a href="/login">Login</a></li>
+<li><a href="/register">Register</a></li>
+<li><a href="/logout">Logout</a></li>
+</ul>
 </nav>
 
 <div class="container">
 
-<h1>📦 Inventory Management</h1>
+<h2>Inventory Management</h2>
 
 <table>
 
-<thead>
-
 <tr>
-<th>Product</th>
+<th>Product Code</th>
 <th>Stock</th>
+<th>Total Sales</th>
 <th>Status</th>
 </tr>
 
-</thead>
+{% for item in inventory %}
 
-<tbody id="inventoryTable">
+<tr>
 
-</tbody>
+<td>{{ item.product }}</td>
+<td>{{ item.stock }}</td>
+<td>{{ item.sales }}</td>
+
+<td class="{% if item.status=='Low Stock' %}low{% else %}ok{% endif %}">
+{{ item.status }}
+</td>
+
+</tr>
+
+{% endfor %}
 
 </table>
 
 </div>
-
-<script src="{{ url_for('static', filename='js/inventory.js') }}"></script>
 
 </body>
 </html>

@@ -1,10 +1,16 @@
 from flask import Flask, render_template,request, redirect, url_for
 from models.predict import  predict_product_sales
+from flask import Flask, render_template, request, redirect, url_for
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from models.user_model import db, User
 import datetime
 import pandas as pd
 
-
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "sanchayAI_inventory_2026_secret_key"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://upasanaporwal@localhost/upasanaporwal"
+db.init_app(app)
+
 
 
 def get_product_codes():
@@ -13,6 +19,43 @@ def get_product_codes():
     return products.tolist()
 
 
+def get_inventory():
+    df = pd.read_csv("data/sales_data_sample.csv", encoding="latin1")
+    inventory = df.groupby("PRODUCTCODE").agg({
+        "QUANTITYORDERED":"sum",
+        "SALES":"sum"
+    }).reset_index()
+
+    inventory.rename(columns={
+        "PRODUCTCODE":"product",
+        "QUANTITYORDERED":"stock",
+        "SALES":"sales"
+    }, inplace=True)
+
+    inventory["status"] = inventory["stock"].apply(
+        lambda x: "Low Stock" if x < 200 else "Available"
+    )
+    return inventory.to_dict(orient="records")
+
+
+
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+with app.app_context():
+    db.create_all()
+
+
+
+
+
+# Routes ==========
 @app.route("/")
 def login_page():
     return render_template("login.html")
@@ -20,15 +63,58 @@ def login_page():
 
 @app.route("/login",methods=["GET","POST"])
 def login():
+    print("Route reached")
+
+    print("All users in DB:")
+    users = User.query.all()
+    for u in users:
+        print(u.username, u.password)
+
     if request.method == "POST":
-        Username = request.form["Username"]
-        Password = request.form["Password"]
+        print("Form data received")
+        username = request.form["username"].lower().strip()
+        password = request.form["password"].strip()
+        print("Username:", username, "Password:", password)
     # simple authentication example
-        if Username == "admin" and Password == "1234":
+        user = User.query.filter_by(username=username).first()
+        print("User object:", user)
+        if user:
+            print("User found in DB:",user.username)
+            print("DB password:",user.password)
+        if user and user.password == password:
+            login_user(user)
+            print("User logged in:",user.username)
             return redirect(url_for("dashboard"))
         else:
+            print("login failed")
             return "Invalid username or password"
     return render_template("login.html")
+
+
+@app.route("/register", methods=["GET","POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"].lower()
+        email = request.form["email"]
+        password = request.form["password"]
+
+        user = User(
+            username=username,
+            email=email,
+            password=password
+        )
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for("login"))
+    return render_template("register.html")
+
+
+@app.route("/admin")
+@login_required
+def admin():
+    if current_user.role != "admin":
+        return "Access Denied"
+    return "Admin Panel"
 
 
 @app.route("/home")
@@ -37,6 +123,7 @@ def home():
 
 
 @app.route("/dashboard",methods=["GET","POST"])
+@login_required
 def dashboard():
     products=get_product_codes()
     prediction=None
@@ -64,7 +151,9 @@ def dashboard():
         products=products,
         prediction=prediction,
         selected_product=selected_product,
-        sales_data=sales_data
+        sales_data=sales_data,
+        user= current_user,
+        username=current_user.username
     )
 
 
@@ -99,8 +188,30 @@ def forecast():
     
 @app.route("/inventory")
 def inventory():
-    return render_template("inventory.html")
+    inventory_data=get_inventory()
+    return render_template("inventory.html",inventory=inventory_data)
 
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
+
+@app.route("/create_test_user")
+def create_test_user():
+    user = User(username="shivam", email="shivam@gmail.com", password="shivam123")
+    db.session.add(user)
+    db.session.commit()
+    return "User created"
+
+
+@app.route("/show_users")
+def show_users():
+    users = User.query.all()
+    for u in users:
+        print(u.username, u.password)
+    return "Check terminal for users"
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5004)
