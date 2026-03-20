@@ -1,42 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Login</title>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <title>Login Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 
 </head>
-
 <body>
-    <nav class="navbar">
-        <div class="logo">
-            <h2>SanchayAI</h2>
+
+<div class="container" id="container">
+
+    <!--left side image-->
+     <!-- Image / AI Section -->
+     <div class="image-section">
+        <h1>SanchayAI 📈</h1>
+        <p>Smart stock management Assistant </p>
+    </div>
+
+
+    <!-- right Forms Section -->
+    <div class="form-section">
+        <!-- Login -->
+        <div class="form login">
+            <h2>Login</h2>
+            <form method="POST" action="/login">
+                <div class="input-box">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="input-box">
+                    <input type="email" name="email" placeholder="email" required>
+                </div>  
+                <div class="input-box">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have account? <span id="goRegister">Register</span></p>
         </div>
-        <ul>
-            <li><a href="/home">Home</a></li>
-            <li><a href="/dashboard">Dashboard</a></li>
-            <li><a href="/forecast">Forecast</a></li>
-            <li><a href="/inventory">Inventory</a></li>
-            <li><a href="/login">Login</a></li>
-            <li><a href="/register">Register</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-    </nav>
 
-<div class="login-container">
-
-<h1>🔐 Smart Inventory System</h1>
-
-<form action="/login" method="POST" id="loginForm">
-    <input type="text"  name="username" placeholder="Username" required>
-    <input type="password" name="password" placeholder="Password" required>
-    <button type="submit">Login</button>
-</form>
-
+        <!-- Register -->
+        <div class="form register">
+            <h2>Register</h2>
+            <form method="POST" action="/register">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have account? <span id="goLogin">Login</span></p>
+        </div>
+    </div>
 </div>
 
 <script src="{{ url_for('static', filename='js/login.js') }}"></script>
-
 </body>
 </html>

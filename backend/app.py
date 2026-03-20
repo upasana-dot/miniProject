@@ -72,16 +72,17 @@ def login():
 
     if request.method == "POST":
         print("Form data received")
-        username = request.form["username"].lower().strip()
-        password = request.form["password"].strip()
-        print("Username:", username, "Password:", password)
+        username = request.form.get("username").lower().strip()
+        email = request.form.get("email")
+        password = request.form.get("password").strip()
+        print("Username:", username, "Email:",email, "Password:", password)
     # simple authentication example
         user = User.query.filter_by(username=username).first()
         print("User object:", user)
         if user:
             print("User found in DB:",user.username)
             print("DB password:",user.password)
-        if user and user.password == password:
+        if user and user.password == password and user.email == email:
             login_user(user)
             print("User logged in:",user.username)
             return redirect(url_for("dashboard"))
