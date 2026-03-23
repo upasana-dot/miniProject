@@ -7,39 +7,60 @@ body{
     .header{
         position: sticky;
         top: 0;
-        background: #1e293b;
+        background:linear-gradient(90deg,#4a7ff9,#3279eb);
         z-index: 1000;
     }
   
     .navbar{
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        background:#17232f;
-        padding:10px 20px;
+        width: 100%;
+    background: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    box-sizing: border-box;
+    position:sticky;
+    top:0;
+    z-index:1000;
+
         
     }
-    .logo{
+    .logo h2{
         color:white;
-        font-size:22px;
-        font-weight:bold;
+        margin :0;
         }
     
     .navbar ul{
         list-style:none;
         display:flex;
-        gap:30px;
+        gap:25px;
+        margin:0;
+        padding:0;
         
     }
     
     .navbar a{
         color:white;
         text-decoration:none;
-        font-size:16px;
+        font-size:15px;
     }
     
     .navbar a:hover{
         color:#38bdf8;
+    }
+    @media (max-width: 768px){
+
+        .navbar{
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+    
+        .navbar ul{
+            flex-wrap: wrap;   /* 👈 important */
+            gap: 15px;
+        }
+    
     }
         
     
@@ -110,4 +131,19 @@ body{
         
         box-shadow:0px 5px 15px rgba(0,0,0,0.1);
         
+        }
+
+        .empty-state{
+            text-align:center;
+            padding:50px;
+            color:#666;
+        }
+        
+        .empty-state h3{
+            margin-bottom:10px;
+            color:#333;
+        }
+        
+        .empty-state p{
+            font-size:14px;
         }

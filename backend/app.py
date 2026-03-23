@@ -63,31 +63,31 @@ def login_page():
 
 @app.route("/login",methods=["GET","POST"])
 def login():
-    print("Route reached")
-
-    print("All users in DB:")
-    users = User.query.all()
-    for u in users:
-        print(u.username, u.password)
 
     if request.method == "POST":
-        print("Form data received")
         username = request.form.get("username").lower().strip()
-        email = request.form.get("email")
         password = request.form.get("password").strip()
-        print("Username:", username, "Email:",email, "Password:", password)
+
+        print("Entered:", username, password)
+
+        if not username or not password:
+            return "Missing fields"
+
+        username = username.lower().strip()
+        password = password.strip()
+
     # simple authentication example
         user = User.query.filter_by(username=username).first()
-        print("User object:", user)
+
+        print("User from DB:", user)
+
         if user:
-            print("User found in DB:",user.username)
-            print("DB password:",user.password)
-        if user and user.password == password and user.email == email:
+            print("DB password:", user.password)
+
+        if user and user.password == password:
             login_user(user)
-            print("User logged in:",user.username)
             return redirect(url_for("dashboard"))
         else:
-            print("login failed")
             return "Invalid username or password"
     return render_template("login.html")
 
@@ -95,19 +95,29 @@ def login():
 @app.route("/register", methods=["GET","POST"])
 def register():
     if request.method == "POST":
-        username = request.form["username"].lower()
-        email = request.form["email"]
-        password = request.form["password"]
+        username = request.form.get("username").lower().strip()
+        email = request.form.get("email").strip()
+        password = request.form.get("password").strip()
+
+        if not username or not email or not password:
+            return "All fields required"
 
         user = User(
             username=username,
             email=email,
             password=password
         )
+
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            return "User already exists"
+        
+        user = User(username=username, email=email, password=password)
+
         db.session.add(user)
         db.session.commit()
         return redirect(url_for("login"))
-    return render_template("register.html")
+    return render_template("login.html")
 
 
 @app.route("/admin")
@@ -215,4 +225,4 @@ def show_users():
     return "Check terminal for users"
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5004)
+    app.run(debug=True, port=5001)

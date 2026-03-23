@@ -1,9 +1,18 @@
+/* RESET */
+body{
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#f1f5f9;
+}
+
+/* NAVBAR */
+
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
     padding:15px 40px;
-    background:#1e293b;
+    background:linear-gradient(90deg,#4a7ff9,#3279eb);
     color:white;
 }
 
@@ -13,96 +22,109 @@
 }
 
 .navbar ul{
-    display:flex;
     list-style:none;
-    gap:30px;
+    display:flex;
+    gap:25px;
+    margin:0;
 }
 
 .navbar a{
-    text-decoration:none;
     color:white;
-    font-size:16px;
+    text-decoration:none;
+    font-size:15px;
+    transition:0.3s;
 }
 
 .navbar a:hover{
     color:#38bdf8;
 }
-    
 
-
-body{
-    margin:0;
-    font-family: Arial;
-    background:#f4f6f9;
-}
-
-.container{
-    display:flex;
-}
-
-
-.sidebar{
-    width:220px;
-    height:100vh;
-    background:#1e293b;
-    color:white;
-    padding:20px;
-}
-
-.sidebar h2{
-    text-align:center;
-}
-
-.sidebar ul{
-    list-style:none;
-    padding:0;
-}
-
-.sidebar li{
-    margin:20px 0;
-}
-
-.sidebar a{
-    text-decoration:none;
-    color:white;
-}
-
+/* MAIN */
 
 .main{
-    flex:1;
     padding:30px;
 }
 
+h1{
+    margin-bottom:20px;
+}
+
+/* CARDS */
 
 .cards{
     display:flex;
-    gap:20px;
-    margin-bottom:40px;
+    gap:25px;
+    margin-bottom:30px;
 }
 
 .card{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    width:200px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    flex:1;
+    padding:25px;
+    border-radius:15px;
+    color:white;
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+/* Different colors */
+
+.card:nth-child(1){
+    background:linear-gradient(135deg,#21225e,#8b5cf6);
+}
+
+.card:nth-child(2){
+    background:linear-gradient(135deg,#f59e0b,#f97316);
+}
+
+.card:nth-child(3){
+    background:linear-gradient(135deg,#10b981,#059669);
 }
 
 .card h3{
     margin:0;
-    color:#555;
+    font-size:16px;
 }
 
 .card p{
     font-size:28px;
     font-weight:bold;
+    margin-top:10px;
 }
 
+/* FILTER SECTION */
+
+.filter{
+    display:flex;
+    gap:15px;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.filter select,
+.filter input{
+    padding:8px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+
+.filter button{
+    padding:8px 15px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* CHART BOX */
 
 .chart-container{
     background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
-

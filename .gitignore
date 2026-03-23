@@ -5,9 +5,10 @@ backend/venv/
 # Python Cache
 __pycache__/
 *.pyc
-
-# ML Models
 *.pkl
+
+backend/data/
+backend/ml/
 
 # Environment variables
 .env

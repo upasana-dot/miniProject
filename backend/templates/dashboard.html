@@ -59,22 +59,24 @@
         </div>
 
         <form method="POST">
+            <div class="filter">
 
-            <label>Select Product</label>
+                <label>Select Product</label>
             
-            <select name="product_code">
+                <select name="product_code">
             
-            {% for product in products %}
+                {% for product in products %}
             
-            <option value="{{product}}">{{product}}</option>
+                <option value="{{product}}">{{product}}</option>
             
-            {% endfor %}
+                {% endfor %}
             
-            </select>
+                </select>
 
-            <input type="number" name="month" placeholder="Month (1-12)" required>
-            <input type="number" name="year" placeholder="Year" required>
-            <button type="submit">Predict</button>
+                <input type="number" name="month" placeholder="Month (1-12)" required>
+                <input type="number" name="year" placeholder="Year" required>
+                <button type="submit">Predict</button>
+            </div>
             
         </form>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

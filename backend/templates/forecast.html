@@ -42,10 +42,30 @@
     </form>
 
     <div class="chart-container">
-        <canvas id="barChart"></canvas>
+
+        {% if sales_data and sales_data|length > 0 %}
+            <canvas id="barChart"></canvas>
+        {% else %}
+            <div class="empty-state">
+                <h3>📊 No Data Yet</h3>
+                <p>Click "Generate Forecast" to see results</p>
+            </div>
+        {% endif %}
+    
     </div>
+    
+    
     <div class="chart-container">
-        <canvas id="lineChart"></canvas>  
+    
+        {% if sales_data and sales_data|length > 0 %}
+            <canvas id="lineChart"></canvas>
+        {% else %}
+            <div class="empty-state">
+                <h3>📈 Trend will appear here</h3>
+                <p>AI forecast graph will be shown here</p>
+            </div>
+        {% endif %}
+    
     </div>
         
     <script>
