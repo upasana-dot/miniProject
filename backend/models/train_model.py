@@ -1,63 +1,26 @@
-# import pandas as pd
-# import pickle
-# import os
-# from sklearn.linear_model import LinearRegression
-# import datetime
-
-# # Absolute path handling
-# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# DATA_PATH = os.path.join(BASE_DIR, "/Users/upasanaporwal/Desktop/project/backend/data/sales_data_sample.csv")
-# MODEL_PATH = os.path.join(BASE_DIR, "saved_model.pkl")
-
-# # Load dataset
-# df = pd.read_csv(
-#     "/Users/upasanaporwal/Desktop/project/backend/data/sales_data_sample.csv",
-#     encoding="latin1"
-# )
-
-# df.columns = df.columns.str.strip().str.lower()
-# print("Columns:",df.columns)
-
-# df["orderdate"] = pd.to_datetime(df["orderdate"])
-# df["month"] = df["orderdate"].dt.month
-# df["year"]= df["orderdate"].dt.year
-
-# monthly_sales=df.groupby(["year","month"])["quantityordered"].sum().reset_index()
-
-# X = monthly_sales[["year","month"]]
-# y = monthly_sales["quantityordered"]
-
-# model = LinearRegression()
-# model.fit(X, y)
-
-# # Save model inside models folder
-# with open(MODEL_PATH, "wb") as f:
-#     pickle.dump(model, f)
-
-# print("✅ Model trained and saved successfully!")
-
-
-
 import pandas as pd
-import sqlite3
 import pickle
+import os
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import joblib
 
-# connect database
-# conn = sqlite3.connect("sales_data_sample.csv")
-# query = """
-# SELECT PRODUCTCODE, YEAR_ID, MONTH_ID, SALES
-# FROM sales_data
-# """
 
-df = pd.read_csv("/Users/upasanaporwal/Desktop/project/backend/data/sales_data_sample.csv",encoding="latin1")
+df = pd.read_csv("data/sales_data_sample.csv",encoding="latin1")
+new_data=pd.read_csv("data/new_data.csv",encoding="latin1")
+
+final_data=pd.concat([df,new_data])
+
+# base path
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+df=final_data
 
 # convert productcode to numeric
 encoder = LabelEncoder()
 df["PRODUCTCODE"] = encoder.fit_transform(df["PRODUCTCODE"])
+df = df.dropna(subset=["SALES"])
 
 # features and target
 X = df[["PRODUCTCODE","MONTH_ID","YEAR_ID"]]
@@ -71,13 +34,15 @@ model = RandomForestRegressor(
     n_estimators=100,
     random_state=42
 )
-
 model.fit(X_train,y_train)
 
-# save model
-pickle.dump(model,open("models/saved_model.pkl","wb"))
+# save paths
+model_path = os.path.join(BASE_DIR, "saved_model.pkl")
+encoder_path = os.path.join(BASE_DIR, "product_encoder.pkl")
 
-# save label encoder
-pickle.dump(encoder,open("models/product_encoder.pkl","wb"))
+# save
+pickle.dump(model, open(model_path, "wb"))
+pickle.dump(encoder, open(encoder_path, "wb"))
 
-print("Random Forest Model trained successfully")
+
+print(" Random Forest Model trained successfully")

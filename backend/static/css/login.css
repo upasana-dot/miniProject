@@ -5,7 +5,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    background: url("/static/image/stock.avif") no-repeat center center/cover;
 }
 
 .container {
@@ -62,7 +62,7 @@ input {
 button {
     width: 100%;
     padding: 10px;
-    background: #2c5364;
+    background: #056087;
     color: white;
     border: none;
     border-radius: 6px;
@@ -78,8 +78,9 @@ span {
 .image-section {
     width: 50%;
     position: relative;
-    background: linear-gradient(135deg, #083345, #203a43, #2c5364); 
+    /* background: linear-gradient(135deg, #083345, #203a43, #2c5364);  */
     /* background-image : url('backend/image/webback.jpg'); */
+    background: #056087;
     color: white;
     display: flex;
     flex-direction: column;
@@ -100,3 +101,4 @@ span {
     position: relative;
     z-index: 1;
 }
+

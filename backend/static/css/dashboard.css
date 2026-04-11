@@ -128,3 +128,12 @@ h1{
     border-radius:15px;
     box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
+   /* Footer */
+    
+   footer{
+    text-align:center;
+    padding:20px;
+    background:linear-gradient(90deg,#4a7ff9,#3279eb);
+    color:white;
+    margin-top:50px;
+    }

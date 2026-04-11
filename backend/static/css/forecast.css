@@ -12,19 +12,13 @@ body{
     }
   
     .navbar{
-        width: 100%;
     background: #0f172a;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 40px;
-    box-sizing: border-box;
-    position:sticky;
-    top:0;
-    z-index:1000;
-
-        
     }
+
     .logo h2{
         color:white;
         margin :0;
@@ -57,11 +51,11 @@ body{
         }
     
         .navbar ul{
-            flex-wrap: wrap;   /* 👈 important */
+            flex-wrap: wrap;  
             gap: 15px;
         }
     
-    }
+    } 
         
     
     .container{
@@ -146,4 +140,14 @@ body{
         
         .empty-state p{
             font-size:14px;
+        }
+
+           /* Footer */
+    
+    footer{
+        text-align:center;
+        padding:20px;
+        background:#0f172a;
+        color:white;
+        margin-top:50px;
         }

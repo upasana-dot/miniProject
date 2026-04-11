@@ -6,7 +6,6 @@
 
 </head>
 <body>
-
 <div class="container" id="container">
 
     <!--left side image-->
@@ -22,7 +21,13 @@
         <!-- Login -->
         <div class="form login">
             <h2>Login</h2>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="error-box">{{ messages[0] }}</div>
+            {% endif %}
+          {% endwith %}
             <form method="POST" action="/login">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
                 <div class="input-box">
                     <input type="text" name="username" placeholder="Username" required>
                 </div>
@@ -38,6 +43,7 @@
         <div class="form register">
             <h2>Register</h2>
             <form method="POST" action="/register">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <input type="text" name="username" placeholder="Username" required>
                 <input type="email" name="email" placeholder="Email" required>
                 <input type="password" name="password" placeholder="Password" required>

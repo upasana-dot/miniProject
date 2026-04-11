@@ -43,17 +43,23 @@
 
             <div class="card">
                 <h3>Total Products</h3>
-                <p id="totalProducts">120</p>
+                <p>{{total_products}}</p>
             </div>
 
             <div class="card">
                 <h3>Low Stock</h3>
-                <p id="lowStock">15</p>
+                <p>"{{low_stock}}"</p>
             </div>
 
             <div class="card">
                 <h3>Forecast Demand</h3>
-                <p id="forecast">230</p>
+                <p>
+                    {% if prediction %}
+                        {{ prediction }}
+                    {% else %}
+                        0
+                    {% endif %}
+                </p>
             </div>
 
         </div>
@@ -73,6 +79,7 @@
             
                 </select>
 
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
                 <input type="number" name="month" placeholder="Month (1-12)" required>
                 <input type="number" name="year" placeholder="Year" required>
                 <button type="submit">Predict</button>
@@ -132,6 +139,15 @@
 
 </div>
 <script src="/static/js/dashboard.js"></script>
+
+<!-- Footer -->
+
+<footer>
+
+    <p>© 2026 Smart Inventory System | Built with Flask & AI</p>
+    
+    </footer>
+    
 
 </body>
 </html> 

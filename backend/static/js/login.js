@@ -7,3 +7,6 @@ document.getElementById("goRegister").onclick = () => {
 document.getElementById("goLogin").onclick = () => {
     container.classList.remove("active");
 };
+function toggleTheme(){
+    document.body.classList.toggle("dark");
+}

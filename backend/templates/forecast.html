@@ -30,7 +30,7 @@
     <option value="{{p}}">{{p}}</option>
     {% endfor %}
     </select>
-    
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
     <select name="year" required>
     <option value="2023">2023</option>
     <option value="2024">2024</option>
@@ -116,6 +116,15 @@ fill:false
     
 
     </script>
+
+    <!-- Footer -->
+
+    <footer>
+
+         <p>© 2026 Smart Inventory System | Built with Flask & AI</p>
+    
+    </footer>
+    
     
 </body>
 </html>

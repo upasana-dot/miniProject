@@ -23,7 +23,8 @@
 
         <h2 id="formTitle">Sign In</h2>
 
-        <form id="authForm">
+        <form method="POST" action="/register">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
 
             <div class="input-box">
                 <input type="text" placeholder="Email" required>
@@ -33,7 +34,7 @@
                 <input type="password" placeholder="Password" required>
             </div>
 
-            <button type="submit" class="btn">Sign In</button>
+            <button type="submit" >Register</button>
 
         </form>
 

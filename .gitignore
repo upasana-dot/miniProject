@@ -4,7 +4,7 @@ backend/venv/
 # Python Cache
 __pycache__/
 *.pyc
-*.pkl
+
 
 backend/data/
 backend/ml/

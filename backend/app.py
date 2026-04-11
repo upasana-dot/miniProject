@@ -1,15 +1,24 @@
 from flask import Flask, render_template,request, redirect, url_for
 from models.predict import  predict_product_sales
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,flash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from models.user_model import db, User
+from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 import pandas as pd
+import os
+from authlib.integrations.flask_client import OAuth
+from flask_wtf import CSRFProtect
+
+
+# flash("Invalid username or password", "error")
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "sanchayAI_inventory_2026_secret_key"
+app.config["SECRET_KEY"] =   "sanchayAI_inventory_2026_secret_key"  # os.urandom(24)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://upasanaporwal@localhost/upasanaporwal"
+app.config['SESSION_COOKIE_HTTPONLY']= True
 db.init_app(app)
+csrf = CSRFProtect(app)
 
 
 
@@ -52,6 +61,9 @@ with app.app_context():
     db.create_all()
 
 
+@app.before_request
+def check_csrf():
+    print("FORM DATA:", request.form)
 
 
 
@@ -63,6 +75,7 @@ def login_page():
 
 @app.route("/login",methods=["GET","POST"])
 def login():
+    print("Route hit")
 
     if request.method == "POST":
         username = request.form.get("username").lower().strip()
@@ -78,21 +91,22 @@ def login():
 
     # simple authentication example
         user = User.query.filter_by(username=username).first()
-
         print("User from DB:", user)
 
-        if user:
-            print("DB password:", user.password)
+        # if user:
+           # print("DB password:", user.password)
 
-        if user and user.password == password:
+        if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect(url_for("dashboard"))
+            return redirect("/dashboard")
         else:
-            return "Invalid username or password"
+            flash("Invalid email or password")
+            return redirect("/login")
     return render_template("login.html")
 
 
 @app.route("/register", methods=["GET","POST"])
+@csrf.exempt
 def register():
     if request.method == "POST":
         username = request.form.get("username").lower().strip()
@@ -100,24 +114,37 @@ def register():
         password = request.form.get("password").strip()
 
         if not username or not email or not password:
-            return "All fields required"
+            flash( "All fields required")
+            return redirect("/register")
+        
+        if "@" not in email:
+            flash("Invalid email")
+            return redirect("/register")
+        
+        if len(password) <6:
+            flash("Password must be at least 6 characters")
+            return redirect("/register")
 
-        user = User(
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash("User already exists")
+            return redirect("/register")
+        
+        hashed_password = generate_password_hash(password)
+
+        user=User(
             username=username,
             email=email,
-            password=password
+            password=hashed_password
         )
-
-        existing_user = User.query.filter_by(username=username).first()
-        if existing_user:
-            return "User already exists"
-        
-        user = User(username=username, email=email, password=password)
-
         db.session.add(user)
         db.session.commit()
+
+        flash("Registration successful. Please log in.")
         return redirect(url_for("login"))
-    return render_template("login.html")
+    
+    return render_template("register.html")
+
 
 
 @app.route("/admin")
@@ -134,16 +161,29 @@ def home():
 
 
 @app.route("/dashboard",methods=["GET","POST"])
+@csrf.exempt
 @login_required
 def dashboard():
     products=get_product_codes()
     prediction=None
     selected_product=None
     sales_data=[]
+    total_products = len(products)
+    low_stock=0
+
     if request.method=="POST":
         product_code = request.form["product_code"]
         month = request.form.get("month")
         year = request.form.get("year")
+
+        month=int(month)
+        year=int(year)
+
+        if not (1 <= month <= 12):
+            return "Invalid month"
+
+        if not (2020 <= year <= 2030):
+           return "Invalid year"
 
         if product_code and month and year:
             month = int(month)
@@ -164,11 +204,15 @@ def dashboard():
         selected_product=selected_product,
         sales_data=sales_data,
         user= current_user,
-        username=current_user.username
+        username=current_user.username,
+        total_products=total_products,
+        low_stock=low_stock
     )
 
 
 @app.route("/forecast", methods=["GET","POST"])
+@csrf.exempt
+@login_required
 def forecast():
     print("cgjyfjhgjg",request.method)
 
@@ -209,6 +253,8 @@ def logout():
     logout_user()
     return redirect(url_for("login"))
 
+
+
 @app.route("/create_test_user")
 def create_test_user():
     user = User(username="shivam", email="shivam@gmail.com", password="shivam123")
@@ -217,6 +263,7 @@ def create_test_user():
     return "User created"
 
 
+# show_users route
 @app.route("/show_users")
 def show_users():
     users = User.query.all()
@@ -224,5 +271,14 @@ def show_users():
         print(u.username, u.password)
     return "Check terminal for users"
 
+
+# delete route
+@app.route("/delete_users")
+def delete_users():
+    User.query.delete()
+    db.session.commit()
+    return "All users deleted"
+
+
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=True, port=5004)
