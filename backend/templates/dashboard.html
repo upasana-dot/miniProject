@@ -48,7 +48,7 @@
 
             <div class="card">
                 <h3>Low Stock</h3>
-                <p>"{{low_stock}}"</p>
+                <p>{{low_stock}}</p>
             </div>
 
             <div class="card">
@@ -61,22 +61,18 @@
                     {% endif %}
                 </p>
             </div>
-
-        </div>
-
+           <div class="card">
+               <h3>Critical: </h3>
+               <p>{{ critical }}</p></div>
+           </div>
+           
         <form method="POST">
             <div class="filter">
-
                 <label>Select Product</label>
-            
                 <select name="product_code">
-            
                 {% for product in products %}
-            
                 <option value="{{product}}">{{product}}</option>
-            
                 {% endfor %}
-            
                 </select>
 
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
@@ -92,8 +88,6 @@
         <div class="chart-container">
             <h2>Sales Prediction</h2>
             const salesData = {{ sales_data | default([]) | tojson }};
-
-            <canvas id="salesChart" width="400" height="200"></canvas>
             <script>
                 const salesData = {{ sales_data | default([]) | tojson | safe }};
                 console.log("SalesData:", salesData);
@@ -102,16 +96,17 @@
                     
                     const labels = salesData.map(item => item.label);
                     const values = salesData.map(item => item.sales);
-                    
-                    const ctx = document.getElementById("salesChart").getContext("2d");
+                    const preData={{ prediction_graph | tojson|safe}};
+                    const ctx = document.getElementById("myChart").getContext("2d");
+                    const predData = {{ prediction_graph |default({'actual': [], 'predicted':[]}) |  tojson }};
+                    const predData = {{ prediction_graph | tojson }};
+                    console.log(preData);
+
                     
                     new Chart(ctx, {
-                    
-                    type: "line",
-                    
-                    data: {
-                    
-                    labels: labels,
+                        type: "line",
+                        data: {
+                        labels: labels,
                     
                     datasets: [{
                     label: "Predicted Sales",
@@ -119,25 +114,69 @@
                     borderColor: "blue",
                     backgroundColor: "rgba(0,0,255,0.2)",
                     borderWidth: 3,
-                    tension: 0.3
-                    
+                    tension: 0.3,
+                    pointRadius: 6,
+                    pointHoverRadius: 7,
+                    pointBackgroundColor: "blue",
+                    showLine:false
                     }]
-                    
-                    },
-                    
+                },
                     options: {
                     responsive: true
                     }
+                });
                     
-                    });
-                    
-                    }
-                </script>
+                }
+            </script>
 
-        </div>
-    </div>
-
+                <canvas id="accuracyChart"></canvas>
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <script>
+                    const data = {
+                        labels: {{ accuracy_data.labels | tojson }},
+                        datasets: [{
+                            label: 'Accuracy (%)',
+                            data: {{ accuracy_data["values"] | tojson }},
+                            borderWidth: 2
+                        }]
+                    };
+                
+                    const config = {
+                        type: 'bar',
+                        data: data,
+                    };
+                
+                    new Chart(
+                        document.getElementById('accuracyChart'),
+                        config
+                    );
+                </script>    
+          </div>
+       </div>
 </div>
+<script>
+    const predData = {{ prediction_graph | tojson }};
+    const labels = predData.map(item => item.label);
+    const values = predData.map(item => item.sales);
+
+    const ctx = document.getElementById("myChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: "Sales Prediction",
+                data: values
+            }]
+        }
+    });
+</script>
+
+
+
+
+<script src="{{ url_for('static', filename='js/chart.js') }}"></script>
 <script src="/static/js/dashboard.js"></script>
 
 <!-- Footer -->

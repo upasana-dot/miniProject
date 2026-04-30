@@ -5,11 +5,12 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 import joblib
+import json
+
 
 
 df = pd.read_csv("data/sales_data_sample.csv",encoding="latin1")
 new_data=pd.read_csv("data/new_data.csv",encoding="latin1")
-
 final_data=pd.concat([df,new_data])
 
 # base path
@@ -44,5 +45,16 @@ encoder_path = os.path.join(BASE_DIR, "product_encoder.pkl")
 pickle.dump(model, open(model_path, "wb"))
 pickle.dump(encoder, open(encoder_path, "wb"))
 
+data = {
+    "actual": y_test.tolist(),
+    "predicted": y_pred.tolist()
+}
+
+with open("models/prediction_data.json", "w") as f:
+    json.dump(data, f)
+
 
 print(" Random Forest Model trained successfully")
+
+
+

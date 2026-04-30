@@ -84,6 +84,10 @@ h1{
     background:linear-gradient(135deg,#10b981,#059669);
 }
 
+.card:nth-child(4){
+    background:linear-gradient(135deg,#44cdef,#26a9dc);
+}
+
 .card h3{
     margin:0;
     font-size:16px;

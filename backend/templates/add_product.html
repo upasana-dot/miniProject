@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Add Product</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/add_product.css') }}">
+    </head>
+    <body>
+        <div class="container">
+            <h2>Add New Product</h2>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="error-box">{{ messages[0] }}</div>
+            {% endif %}
+            {% endwith %}
+            <form method="POST" action="/add-product">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <div class="input-box">
+                    <input type="text" name="product_code" placeholder="Product Code" required>
+                </div>
+                <div class="input-box">
+                    <input type="text" name="product_name" placeholder="Product Name" required>
+                </div>
+                <div class="input-box">
+                    <input type="number" name="stock" placeholder="Stock Quantity" required>
+                </div>
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+    </body>
+</html>

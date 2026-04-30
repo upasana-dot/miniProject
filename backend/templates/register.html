@@ -1,53 +1,70 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Auth Page</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/register.css') }}">
+    <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- LEFT PANEL -->
-    <div class="left-panel">
-        <h1>Welcome to InventoryAI 🚀</h1>
-        <p>Manage inventory with AI-powered forecasting</p>
-        <button onclick="switchToSignup()">Sign Up</button>
+    <!-- LEFT SIDE (same as login) -->
+    <div class="image-section">
+        <h1>SanchayAI 📈</h1>
+        <p>Smart Stock Management Assistant</p>
     </div>
 
-    <!-- RIGHT PANEL -->
-    <div class="right-panel">
+    <!-- RIGHT SIDE FORM -->
+    <div class="form-section">
+        <div class="form">
+            <h2>Create Account</h2>
 
-        <h2 id="formTitle">Sign In</h2>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="error-box">{{ messages[0] }}</div>
+            {% endif %}
+            {% endwith %}
 
-        <form method="POST" action="/register">
-            <input type="hidden" name="csrf_token" value="{{ csrf_token() if csrf_token else '' }}">
+            <form method="POST" action="/register">
+                
+                <!-- CSRF -->
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-            <div class="input-box">
-                <input type="text" placeholder="Email" required>
-            </div>
+                <div class="input-box">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
 
-            <div class="input-box">
-                <input type="password" placeholder="Password" required>
-            </div>
+                <div class="input-box">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
 
-            <button type="submit" >Register</button>
+                <div class="input-box">
+                    <input type="password" name="password" placeholder="Password" required>
+                    <span onclick="togglePassword()"> </span>
+                </div>
 
-        </form>
+                <script>
+                    function togglePassword() {
+                        var passwordInput = document.querySelector('input[name="password"]');
+                        if (passwordInput.type === "password") {
+                            passwordInput.type = "text";
+                        } else {
+                            passwordInput.type = "password";
+                        }
+                    }
+                </script>
 
-        <p class="toggle-text">
-            Don't have an account?
-            <span onclick="switchToSignup()">Sign Up</span>
-        </p>
+                <button type="submit">Register</button>
+            </form>
 
+            <p>Already have an account? 
+                <a href="/login">Login</a>
+            </p>
+        </div>
     </div>
 
 </div>
-
-<script src="register.js"></script>
 
 </body>
 </html>

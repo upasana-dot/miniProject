@@ -13,5 +13,9 @@ new Chart(document.getElementById("salesChart"), {
         }]
     }
 });
-
 }
+const predData = JSON.parse(
+    document.getElementById("predData").dataset.values
+);
+
+console.log(predData);
